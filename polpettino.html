@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Per te, polpettino</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: "Georgia", serif;
+    background: radial-gradient(circle at bottom, #0a0f1c, #000);
+    color: #ffe9f2;
+}
+
+/* 🌌 STELLE */
+.stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(1px 1px at 20% 30%, white, transparent),
+        radial-gradient(1px 1px at 80% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent);
+    background-size: 200px 200px;
+    animation: stars 60s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes stars {
+    from { background-position: 0 0; }
+    to { background-position: 400px 800px; }
+}
+
+/* 💗 CUORE */
+.heart {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    background: #ff3b7f;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    animation: beat 1.2s infinite;
+    box-shadow: 0 0 50px rgba(255, 80, 150, 0.9);
+    opacity: 0;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: #ff3b7f;
+    border-radius: 50%;
+}
+
+.heart::before { top: -60px; }
+.heart::after { left: 60px; }
+
+@keyframes beat {
+    0% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.15); }
+    100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+}
+
+/* 📽️ SLIDE */
+.slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide p {
+    font-size: 22px;
+    line-height: 1.7;
+    max-width: 700px;
+    white-space: pre-line;
+}
+
+/* 💖 CUORI */
+.particle {
+    position: absolute;
+    bottom: -20px;
+    font-size: 18px;
+    animation: rise 6s linear forwards;
+}
+
+@keyframes rise {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-900px); opacity: 0; }
+}
+
+/* 🌟 FINALE */
+.final {
+    font-size: 40px;
+    color: #ffd1e6;
+    text-shadow: 0 0 25px rgba(255,150,200,0.9);
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+<div class="heart" id="heart"></div>
+
+<div class="slide active"><p id="text"></p></div>
+
+<div class="slide"><p>
+Polpettino,
+
+se stai leggendo questo  
+è perché ho trovato un modo diverso  
+per dirti quello che a voce  
+non riesco mai a dire bene.
+</p></div>
+
+<div class="slide"><p>
+Io non ti amo nei momenti facili.  
+Ti amo quando sei stanco.  
+Quando sei insopportabile.  
+Quando sei fragile.  
+Quando sei tu.
+</p></div>
+
+<div class="slide"><p>
+Sei casa.  
+Sei scelta.  
+Sei il mio per sempre,  
+anche quando ho paura.
+</p></div>
+
+<div class="slide"><p>
+E se un giorno dimenticassi tutto,  
+ricordati solo questo:
+</p></div>
+
+<div class="slide"><p class="final">
+ti amo più di tutto.
+</p></div>
+
+<audio autoplay>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7f6fbdc8db.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const slides = document.querySelectorAll(".slide");
+let current = 0;
+
+// mostra cuore dopo un po’
+setTimeout(() => {
+    document.getElementById("heart").style.opacity = 1;
+}, 4000);
+
+function nextSlide() {
+    slides[current].classList.remove("active");
+    current++;
+    if (current < slides.length) {
+        slides[current].classList.add("active");
+    }
+}
+
+// tempo per ogni slide (ms)
+const timings = [6000, 7000, 7000, 6000, 5000];
+
+let delay = 2000;
+timings.forEach((time, index) => {
+    setTimeout(nextSlide, delay);
+    delay += time;
+});
+
+// pioggia di cuori
+function heartRain() {
+    const h = document.createElement("div");
+    h.className = "particle";
+    h.innerHTML = "💖";
+    h.style.left = Math.random() * window.innerWidth + "px";
+    h.style.fontSize = (14 + Math.random() * 20) + "px";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 6000);
+}
+setInterval(heartRain, 300);
+</script>
+
+</body>
+</html>
